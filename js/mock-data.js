@@ -68,8 +68,8 @@ function seed(){
     P('PRD-CHIB','SLR-OTAK','Chibi Figure Bundle',12500,15,'Figures & Collectibles',IMG.fig4,4.7,88),
   ];
   LS.set('users', []);
-  LS.set('sellers', sellers);
-  LS.set('products', products);
+  LS.set('sellers', []);
+  LS.set('products', []);
   LS.set('admins', [{id:'ADM-ROOT', username:'admin', password:'anilyfe@admin', createdAt:Date.now()}]);
   LS.set('cart', []);
   LS.set('wishlist', []);

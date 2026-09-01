@@ -18,6 +18,8 @@ function searchRun(){
 /* Fired from a category chip (data-action="mq-cat" data-cat="...") */
 function searchSetCategory(cat){
   mqState.cat = cat;
+  if(cat === 'All') location.hash = '#/marketplace';
+  else location.hash = '#/category/' + encodeURIComponent(cat);
   route();
 }
 
@@ -32,6 +34,8 @@ function searchRunFromKeydown(value){
 /* Fired when the category <select id="mqCat"> changes */
 function searchSetCategoryFromSelect(value){
   mqState.cat = value;
+  if(value === 'All') location.hash = '#/marketplace';
+  else location.hash = '#/category/' + encodeURIComponent(value);
   route();
 }
 

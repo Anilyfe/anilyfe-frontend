@@ -16,7 +16,7 @@
 
   /* ---------- Logo ---------- */
   .logo{font-family:'Chakra Petch',sans-serif;font-style:italic;font-weight:700;display:inline-flex;align-items:center;line-height:1;letter-spacing:.01em;user-select:none;text-decoration:none}
-  .logo .la{font-size:1.28em;background:linear-gradient(175deg,#FCE9A8 0%,#EFC257 38%,#C98F1B 72%,#8A5E07 100%);-webkit-background-clip:text;background-clip:text;color:transparent;transform:skewX(-8deg);filter:drop-shadow(0 1px 0 rgba(0,0,0,.15))}
+  .logo .la{font-size:1.28em;background:linear-gradient(175deg,#FFE7A1 0%,#E7B84A 24%,#C78C15 52%,#8B5A00 78%,#5B3900 100%);-webkit-background-clip:text;background-clip:text;color:transparent;transform:skewX(-8deg);filter:drop-shadow(0 1px 0 rgba(0,0,0,.18))}
   .logo .ls{background:linear-gradient(180deg,#FFFFFF 0%,#DDE6F2 45%,#9FB0C6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;transform:skewX(-8deg)}
   .logo .ls.on-dark{background:linear-gradient(180deg,#FFFFFF 0%,#E7F1FF 50%,#B9CCE8 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
   .logo .kunai{height:1.15em;width:auto;margin:0 .02em;transform:translateY(.06em)}

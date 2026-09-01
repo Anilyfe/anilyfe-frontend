@@ -9,8 +9,6 @@ function viewMarketplace(){
     const okQ = !mqState.q || p.name.toLowerCase().includes(mqState.q.toLowerCase());
     return okCat && okQ;
   });
-  const sellers = LS.get('sellers',[]).filter(s=>s.status==='approved');
-  const top = [...sellers].sort((a,b)=>(b.sales||0)-(a.sales||0)).slice(0,4);
   const deal = approvedProducts().find(p=>p.off>0) || products[0];
   const cart = LS.get('cart',[]), wish = LS.get('wishlist',[]);
 
@@ -132,6 +130,17 @@ function viewMarketplace(){
           </div>
         </div>
 
+        <div class="card p-5 mb-7 reveal bg-gradient-to-r from-[#E7F1FF] to-white border border-[#D0E3FF]">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <div class="font-tech text-[10px] font-bold tracking-[.25em] text-[#334EAC] mb-2">COMMUNITY</div>
+              <h2 class="font-display font-extrabold text-2xl text-[#081F5C]">Join the Anilyfe community</h2>
+              <p class="mt-2 text-sm text-[#5a6a9c] max-w-xl">Connect with collectors, creators and anime sellers across Nigeria. Discover deals, updates, and fresh drops before anyone else.</p>
+            </div>
+            <button class="btn btn-primary !py-2.5 !px-5 !text-xs" data-action="toast" data-msg="Community space opens soon — stay tuned!">Join Now <i data-lucide="arrow-right" style="width:14px;height:14px"></i></button>
+          </div>
+        </div>
+
         <!-- category chips (mobile + quick) -->
         <div id="niches-mq" class="mb-7 reveal">
           <div class="flex items-center justify-between mb-3">
@@ -188,27 +197,6 @@ function viewMarketplace(){
           </div>`:''}
         </div>
 
-        <div class="card p-5 !bg-gradient-to-br !from-[#E7F1FF] !to-white reveal">
-          <div class="font-display font-bold text-sm mb-1">Join the Community</div>
-          <p class="text-xs text-[#5a6a9c] leading-relaxed mb-4">Connect with thousands of anime fans, share, discuss and grow together.</p>
-          <div class="flex -space-x-2 mb-4">${['A','K','M','S'].map((c,i)=>`<span class="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-extrabold text-white" style="background:${['#334EAC','#708BD1','#081F5C','#5F7BC9'][i]}">${c}</span>`).join('')}<span class="w-8 h-8 rounded-full border-2 border-white bg-[#D0E3FF] flex items-center justify-center text-[9px] font-extrabold text-[#334EAC]">+9k</span></div>
-          <button class="btn btn-primary w-full !py-2.5 !text-xs" data-action="toast" data-msg="Community space opens soon — stay tuned!">Join Now <i data-lucide="arrow-right" style="width:14px;height:14px"></i></button>
-        </div>
-
-        <div class="card p-5 reveal">
-          <div class="flex items-center justify-between mb-4"><div class="font-display font-bold text-sm">Top Sellers</div><span class="text-[10px] font-extrabold text-[#334EAC] uppercase tracking-wider">Ranked</span></div>
-          <div class="space-y-3">
-            ${top.map((s,i)=>`
-            <div class="flex items-center gap-3 group">
-              <span class="font-tech text-xs font-bold text-[#708BD1] w-3">${i+1}</span>
-              <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#081F5C] to-[#334EAC] text-white flex items-center justify-center font-display font-bold text-sm shrink-0">${esc(s.businessName[0])}</span>
-              <div class="min-w-0 flex-1">
-                <div class="text-xs font-extrabold truncate">${esc(s.businessName)}</div>
-                <div class="text-[10px] text-[#708BD1] font-bold flex items-center gap-1"><i data-lucide="star" style="width:10px;height:10px;color:#E9B949;fill:#E9B949"></i> ${s.rating||'New'} · ${s.sales||0} Sales</div>
-              </div>
-            </div>`).join('') || '<div class="text-xs text-[#708BD1] font-semibold">No approved sellers yet.</div>'}
-          </div>
-        </div>
       </aside>
     </div>
 
@@ -217,6 +205,49 @@ function viewMarketplace(){
 }
 
 
+function viewCategory(category='All'){
+  const selected = category && Object.keys(CATS).includes(category) ? category : 'All';
+  mqState.cat = selected;
+  const u = currentUser();
+  const products = approvedProducts().filter(p => selected === 'All' || catKey(p.category) === catKey(selected));
+  const categoryLabel = selected === 'All' ? 'All Products' : selected;
+  return `
+  <div class="min-h-screen bg-[#F6FCFF]">
+    ${marketTopBar(u || {id:''})}
+    <main class="max-w-[1400px] mx-auto px-4 py-8">
+      <div class="card p-6 md:p-8 reveal">
+        <div class="flex items-center justify-between gap-3">
+          <div class="font-tech text-[10px] font-bold tracking-[.28em] text-[#708BD1]">CATEGORY</div>
+          <a href="#/marketplace" class="btn btn-ghost !px-3 !py-2 !text-[11px]">Back to marketplace</a>
+        </div>
+        <h1 class="font-display font-extrabold text-3xl md:text-5xl mt-3 text-[#081F5C]">${esc(categoryLabel)}</h1>
+        <p class="mt-2 text-sm text-[#5a6a9c] max-w-2xl">Browse all products sellers have posted in this category, including new arrivals and in-stock picks.</p>
+      </div>
+
+      <div class="mt-6 reveal">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-display font-bold text-lg">Shop this category</h2>
+          <span class="text-xs font-bold text-[#708BD1]">${products.length} listings</span>
+        </div>
+        <div class="flex gap-3 overflow-x-auto pb-2">
+          <button class="flex items-center gap-2 shrink-0 px-3 py-2 rounded-full text-xs font-bold ${selected==='All'?'bg-[#334EAC] text-white':'bg-white border border-[#D0E3FF] text-[#334EAC]'}" data-action="mq-cat" data-cat="All">All products</button>
+          ${Object.entries(CATS).map(([k,v])=>`<button class="flex items-center gap-2 shrink-0 px-3 py-2 rounded-full text-xs font-bold ${selected===k?'bg-[#334EAC] text-white':'bg-white border border-[#D0E3FF] text-[#334EAC]'}" data-action="mq-cat" data-cat="${k}"><i data-lucide="${v.icon}" style="width:14px;height:14px"></i> ${k}</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="mt-8">
+        ${products.length ? `<div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">${products.map(p=>productCard(p)).join('')}</div>` : `
+          <div class="card p-12 text-center reveal">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-[#E7F1FF] flex items-center justify-center mb-4"><i data-lucide="package-open" style="width:28px;height:28px;color:#708BD1"></i></div>
+            <div class="font-display font-bold text-lg">No products in this category yet</div>
+            <p class="text-sm text-[#708BD1] mt-1">Sellers have not listed anything here yet. Check back soon or browse another category.</p>
+            <a href="#/marketplace" class="btn btn-primary mt-5">Browse all categories</a>
+          </div>`}
+      </div>
+    </main>
+  </div>`;
+}
+
 function marketTopBar(u){
   return `<header class="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-[#D0E3FF]">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
@@ -224,7 +255,7 @@ function marketTopBar(u){
       <nav class="flex items-center gap-1">
         <a href="#/marketplace" class="icon-btn" title="Marketplace"><i data-lucide="store" style="width:18px;height:18px"></i></a>
         <a href="#/profile" class="icon-btn" title="Profile"><i data-lucide="circle-user-round" style="width:18px;height:18px"></i></a>
-        ${sellerOf(u.id)?`<a href="#/seller" class="icon-btn" title="Seller dashboard"><i data-lucide="layout-dashboard" style="width:18px;height:18px"></i></a>`:''}
+        ${u && sellerOf(u.id)?`<a href="#/seller" class="icon-btn" title="Seller dashboard"><i data-lucide="layout-dashboard" style="width:18px;height:18px"></i></a>`:''}
         <button class="icon-btn" data-action="logout" title="Log out"><i data-lucide="log-out" style="width:18px;height:18px"></i></button>
       </nav>
     </div>

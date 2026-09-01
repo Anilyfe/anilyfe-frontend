@@ -19,13 +19,13 @@ const approvedProducts = () => { const ok = LS.get('sellers',[]).filter(s=>s.sta
 
 function kunaiSVG(dark){
   return `<svg class="kunai" viewBox="0 0 22 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs><linearGradient id="kg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FCE9A8"/><stop offset=".45" stop-color="#E9B949"/><stop offset="1" stop-color="#9A6A0B"/></linearGradient></defs>
+    <defs><linearGradient id="kg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7A1"/><stop offset=".34" stop-color="#E7B84A"/><stop offset=".72" stop-color="#C78C15"/><stop offset="1" stop-color="#5B3900"/></linearGradient></defs>
     <circle cx="11" cy="5.5" r="3.6" stroke="url(#kg)" stroke-width="2.6"/>
     <rect x="8.4" y="10" width="5.2" height="13" rx="1.4" fill="url(#kg)"/>
-    <path d="M8.4 13h5.2M8.4 16.2h5.2M8.4 19.4h5.2" stroke="#8A5E07" stroke-width="1"/>
+    <path d="M8.4 13h5.2M8.4 16.2h5.2M8.4 19.4h5.2" stroke="#5B3900" stroke-width="1"/>
     <rect x="7" y="23" width="8" height="3" rx="1.2" fill="url(#kg)"/>
     <path d="M11 51 L5.6 31 Q11 27.4 16.4 31 Z" fill="url(#kg)"/>
-    <path d="M11 49 L11 29.4" stroke="#8A5E07" stroke-width=".9"/>
+    <path d="M11 49 L11 29.4" stroke="#5B3900" stroke-width=".9"/>
   </svg>`;
 }
 function wordmark(cls, onDark){

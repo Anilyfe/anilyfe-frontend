@@ -145,20 +145,62 @@ function viewProduct(id){
   </div>`;
 }
 
+const PRODUCT_COLOR_OPTIONS = ['Black','White','Blue','Purple','Red','Pink','Green','Yellow','Orange','Grey','Silver','Gold','Brown','Navy','Beige','Teal','Cyan','Peach'];
+const PRODUCT_SIZE_OPTIONS = ['XS','S','M','L','XL','XXL','XXXL','2XS','3XS','4XS','One Size','Custom'];
+
+function readImageFile(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('Image read failed'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function previewProductImages(inputEl){
+  const wrap = document.getElementById('productImagePreview');
+  if(!wrap || !inputEl.files || !inputEl.files.length){ wrap.innerHTML = ''; return; }
+  wrap.innerHTML = '';
+  Array.from(inputEl.files).slice(0,4).forEach(file => {
+    const url = URL.createObjectURL(file);
+    const node = document.createElement('div');
+    node.className = 'aspect-square rounded-xl overflow-hidden border border-[#D0E3FF] bg-[#F6FCFF]';
+    node.innerHTML = `<img src="${url}" class="w-full h-full object-cover" onerror="this.remove()" />`;
+    wrap.appendChild(node);
+  });
+}
+
 /* Fired on submit of #productForm, from the seller dashboard. */
-function productAdd(formEl){
+async function productAdd(formEl){
   const f = new FormData(formEl), u = currentUser(), s = sellerOf(u.id);
   const products = LS.get('products', []);
-  products.push({
+  const fileInput = formEl.querySelector('input[name="images"]');
+  const colorSelect = formEl.querySelector('select[name="colors"]');
+  const sizeSelect = formEl.querySelector('select[name="sizes"]');
+  const files = Array.from(fileInput?.files || []).slice(0,4);
+  const images = files.length ? await Promise.all(files.map(file => readImageFile(file))) : [];
+  const colors = colorSelect ? (colorSelect.multiple ? Array.from(colorSelect.selectedOptions).map(o => o.value.trim()).filter(Boolean) : [colorSelect.value].filter(Boolean)) : (f.get('colors') || '').split(',').map(v => v.trim()).filter(Boolean);
+  const sizes = sizeSelect ? (sizeSelect.multiple ? Array.from(sizeSelect.selectedOptions).map(o => o.value.trim()).filter(Boolean) : [sizeSelect.value].filter(Boolean)) : (f.get('sizes') || '').split(',').map(v => v.trim()).filter(Boolean);
+  const description = ((f.get('description')||'').trim());
+  if(!description){ toast('Product description is required.', 'alert-circle'); return; }
+  if(description.length > 500){ toast('Product description must be 500 characters or less.', 'alert-circle'); return; }
+  const product = {
     id: uid('PRD'), sellerId: s.id,
     name: (f.get('name')||'').trim(),
+    description,
     price: Number(f.get('price'))||0,
     stock: Number(f.get('stock'))||0,
-    category: f.get('category'),
-    img: null, rating: 5.0, reviews: 0, off: 0, createdAt: Date.now()
-  });
+    category: f.get('category') || 'Figures & Collectibles',
+    img: images[0] || null,
+    gallery: images,
+    colors: colors.length ? colors : ['Black'],
+    sizes: sizes.length ? sizes : ['M'],
+    rating: 5.0, reviews: 0, off: 0, createdAt: Date.now()
+  };
+  products.push(product);
   LS.set('products', products);
-  toast(`"${esc(f.get('name'))}" added to your catalog.`, 'package-plus');
+  toast(`"${esc(product.name)}" added to your catalog.`, 'package-plus');
+  sellerTab = 'dashboard';
   route();
 }
 

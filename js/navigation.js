@@ -24,6 +24,7 @@ function route(){
   else if(h.startsWith('#/wishlist'))         html = viewWishlist();
   else if(h.startsWith('#/orders'))           html = viewOrders();
   else if(h.startsWith('#/product/'))         html = viewProduct(h.replace('#/product/','').split('/')[0].split('?')[0]);
+  else if(h.startsWith('#/category/'))        html = viewCategory(decodeURIComponent(h.replace('#/category/','').split('/')[0].split('?')[0]));
   else if(h.startsWith('#/seller/'))          html = viewSellerStore(h.replace('#/seller/','').split('/')[0].split('?')[0]);
   else if(h.startsWith('#/marketplace'))      html = viewMarketplace();
   else if(h.startsWith('#/seller'))           html = viewSeller();
@@ -87,6 +88,7 @@ document.addEventListener('click', e=>{
 
     case 'logout': LS.del('session'); toast('Logged out. See you soon!','log-out'); location.hash='#/'; break;
     case 'prof-tab': profTab=t.dataset.tab; route(); break;
+    case 'seller-tab': sellerTab=t.dataset.tab; route(); break;
 
     case 'copy': navigator.clipboard?.writeText(t.dataset.text); toast('Seller ID copied to clipboard.','clipboard-check'); break;
     case 'del-product': productDelete(t); break;
@@ -111,6 +113,7 @@ document.addEventListener('change', e=>{
   if(t.dataset.action==='set-region'){ LS.set('region', t.value); toast(`Region set to ${region().flag} ${region().name} — prices now in ${region().symbol.trim()}.`,'globe-2'); route(); }
   if(t.id==='mqCat'){ searchSetCategoryFromSelect(t.value); }
   if(t.dataset.action==='admin-view-sel'){ adminView=t.value; route(); }
+  if(t.name==='images' && t.type==='file'){ previewProductImages(t); }
 });
 
 document.addEventListener('submit', e=>{
