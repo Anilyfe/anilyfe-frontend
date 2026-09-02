@@ -334,7 +334,7 @@ function viewSeller(){
       productDefaults: { category:'Manga & Books', currency:'NGN', processing:'2–3 business days' },
       inventory: { lowStock:5, notifyLow:true, notifyOut:true, hideOut:false },
       orders: { confirmation:'Auto-confirm after payment', processing:'2–3 business days', notifications:{newOrder:true,cancel:true,delivered:true}, cancellation:'Marketplace default' },
-      shipping: { local:true, nacional:true, pickup:true, free:false, localFee:'2000', nationalFee:'5000', dispatch:'Port Harcourt warehouse', processing:'2–3 business days', options:[{id:'local', label:'Local Delivery', fee:'2000', enabled:true}, {id:'nationwide', label:'Nationwide Delivery', fee:'5000', enabled:true}] },
+      shipping: { local:true, national:true, pickup:true, free:false, localFee:'2000', nationalFee:'5000', dispatch:'Port Harcourt warehouse', processing:'2–3 business days', options:[{id:'local', label:'Local Delivery', fee:'2000', enabled:true}, {id:'nationwide', label:'Nationwide Delivery', fee:'5000', enabled:true}] },
       returns: { window:'Marketplace default', conditions:{unused:true, packaging:true, purchase:true}, locked:true },
       payout: { method:'Bank transfer', schedule:'Weekly', bank:'Access Bank', accountNumber:'***********1234', verified:true },
       fees: { commission:15, transaction:'₦1,500', refund:'Policy-based' },
@@ -349,6 +349,10 @@ function viewSeller(){
     const stored = LS.get('anilyfeSellerSettings', null);
     const merged = JSON.parse(JSON.stringify(defaults));
     if(stored){ Object.keys(defaults).forEach(k => { if(stored[k]) merged[k] = {...defaults[k], ...stored[k]}; }); }
+    if(merged.shipping){
+      if(typeof merged.shipping.national === 'undefined' && typeof merged.shipping.nacional !== 'undefined'){ merged.shipping.national = merged.shipping.nacional; }
+      if(typeof merged.shipping.nacional !== 'undefined'){ delete merged.shipping.nacional; }
+    }
     return merged;
   }
 
@@ -500,7 +504,7 @@ function viewSeller(){
               <form data-settings-form="shipping" class="mt-5 grid md:grid-cols-2 gap-4">
                 <div class="md:col-span-2 space-y-3">
                   <label class="flex items-center gap-3 text-sm text-[#374151] font-medium"><input type="checkbox" name="local" ${settings.shipping.local?'checked':''} class="h-4 w-4 rounded border-[#CBD5E1] text-[#334EAC] focus:ring-[#334EAC]" /> Local delivery</label>
-                  <label class="flex items-center gap-3 text-sm text-[#374151] font-medium"><input type="checkbox" name="nacional" ${settings.shipping.nacional?'checked':''} class="h-4 w-4 rounded border-[#CBD5E1] text-[#334EAC] focus:ring-[#334EAC]" /> Nationwide delivery</label>
+                  <label class="flex items-center gap-3 text-sm text-[#374151] font-medium"><input type="checkbox" name="national" ${settings.shipping.national?'checked':''} class="h-4 w-4 rounded border-[#CBD5E1] text-[#334EAC] focus:ring-[#334EAC]" /> Nationwide delivery</label>
                   <label class="flex items-center gap-3 text-sm text-[#374151] font-medium"><input type="checkbox" name="pickup" ${settings.shipping.pickup?'checked':''} class="h-4 w-4 rounded border-[#CBD5E1] text-[#334EAC] focus:ring-[#334EAC]" /> Pickup</label>
                   <label class="flex items-center gap-3 text-sm text-[#374151] font-medium"><input type="checkbox" name="free" ${settings.shipping.free?'checked':''} class="h-4 w-4 rounded border-[#CBD5E1] text-[#334EAC] focus:ring-[#334EAC]" /> Free shipping</label>
                 </div>
@@ -790,7 +794,7 @@ function saveSettingsSection(section){
   if(section === 'shipping'){
     const data = new FormData(form);
     settings.shipping.local = form.querySelector('[name="local"]').checked;
-    settings.shipping.nacional = form.querySelector('[name="nacional"]').checked;
+    settings.shipping.national = form.querySelector('[name="national"]').checked;
     settings.shipping.pickup = form.querySelector('[name="pickup"]').checked;
     settings.shipping.free = form.querySelector('[name="free"]').checked;
     settings.shipping.localFee = (data.get('localFee') || '2000').toString();
@@ -894,7 +898,7 @@ function saveSettingsSection(section){
       }
       if(key === 'shipping'){
         merged.shipping.local = formEl.querySelector('[name="local"]').checked;
-        merged.shipping.nacional = formEl.querySelector('[name="nacional"]').checked;
+        merged.shipping.national = formEl.querySelector('[name="national"]').checked;
         merged.shipping.pickup = formEl.querySelector('[name="pickup"]').checked;
         merged.shipping.free = formEl.querySelector('[name="free"]').checked;
         merged.shipping.localFee = (formData.get('localFee') || '2000').toString();

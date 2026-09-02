@@ -174,6 +174,10 @@ function viewAdminDash(){
   const transactions = metrics.transactions.filter(t => adminMatchesSearch(t.id, `${t.buyer} ${t.seller} ${t.status}`));
   const reports = metrics.reports.filter(r => adminMatchesSearch(r.id, `${r.type} ${r.subject} ${r.status}`));
   const tickets = metrics.tickets.filter(t => adminMatchesSearch(t.id, `${t.customer} ${t.category} ${t.topic} ${t.status}`));
+  const topSellers = [...sellers]
+    .filter(s => s.status === 'approved')
+    .sort((a, b) => (Number(b.sales) || 0) - (Number(a.sales) || 0) || (Number(b.rating) || 0) - (Number(a.rating) || 0))
+    .slice(0, 5);
 
   const nav = ADMIN_VIEW_TYPES.map(item => ({...item, badge: item.k === 'sellers' ? metrics.pendingSellers : item.k === 'products' ? metrics.pendingProducts : 0 }));
   const selected = nav.find(n => n.k === adminView) || nav[0];
@@ -237,6 +241,26 @@ function viewAdminDash(){
             `).join('')}
           </div>
         </div>
+      </div>
+
+      <div class="card p-5 reveal mb-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-display font-bold text-xl">Top sellers</h3>
+          <span class="text-[10px] font-bold uppercase tracking-[.2em] text-[#708BD1]">Live ranking</span>
+        </div>
+        ${topSellers.length ? topSellers.map((seller, index) => `
+          <div class="flex items-center gap-3 py-3 border-b border-[#E7F1FF] last:border-0">
+            <span class="w-8 h-8 rounded-xl bg-[#E7F1FF] text-[#334EAC] flex items-center justify-center font-display font-extrabold text-sm">#${index + 1}</span>
+            <div class="flex-1 min-w-0">
+              <div class="text-xs font-extrabold truncate">${esc(seller.businessName || 'Seller')}</div>
+              <div class="text-[10px] text-[#708BD1] font-bold">${esc(seller.sells || 'Anime seller')} · ${seller.rating || 0}⭐</div>
+            </div>
+            <div class="text-right">
+              <div class="font-display font-extrabold text-sm">${Number(seller.sales || 0).toLocaleString()}</div>
+              <div class="text-[10px] text-[#708BD1] font-bold uppercase tracking-wider">sales</div>
+            </div>
+          </div>
+        `).join('') : '<div class="text-sm text-[#708BD1]">No approved sellers are ranking yet.</div>'}
       </div>
 
       <div class="grid lg:grid-cols-2 gap-5">

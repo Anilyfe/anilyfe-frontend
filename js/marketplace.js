@@ -125,19 +125,7 @@ function viewMarketplace(){
             <p class="mt-4 text-sm text-[#B9CCE8] leading-relaxed">The ultimate marketplace and community for anime lovers. Discover, connect and support the anime culture.</p>
             <div class="mt-6 flex gap-3">
               <a href="#niches-mq" class="btn btn-primary !py-2.5 !text-xs">Shop Now <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
-              <button class="btn !py-2.5 !text-xs !bg-white/10 !text-white !border !border-white/25 hover:!bg-white/20" data-action="toast" data-msg="Community space opens soon — stay tuned!">Join Community</button>
             </div>
-          </div>
-        </div>
-
-        <div class="card p-5 mb-7 reveal bg-gradient-to-r from-[#E7F1FF] to-white border border-[#D0E3FF]">
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <div class="font-tech text-[10px] font-bold tracking-[.25em] text-[#334EAC] mb-2">COMMUNITY</div>
-              <h2 class="font-display font-extrabold text-2xl text-[#081F5C]">Join the Anilyfe community</h2>
-              <p class="mt-2 text-sm text-[#5a6a9c] max-w-xl">Connect with collectors, creators and anime sellers across Nigeria. Discover deals, updates, and fresh drops before anyone else.</p>
-            </div>
-            <button class="btn btn-primary !py-2.5 !px-5 !text-xs" data-action="toast" data-msg="Community space opens soon — stay tuned!">Join Now <i data-lucide="arrow-right" style="width:14px;height:14px"></i></button>
           </div>
         </div>
 

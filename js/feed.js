@@ -83,6 +83,22 @@ function viewLanding(){
       <div class="marquee"><div class="marquee-track pr-5">${loop}${loop}</div></div>
     </section>
 
+    <!-- community -->
+    <section id="community" class="relative z-10 py-8 md:py-12">
+      <div class="max-w-7xl mx-auto px-5">
+        <div class="glass rounded-3xl p-8 md:p-12">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div class="max-w-2xl">
+              <div class="font-tech text-xs font-bold tracking-[.25em] text-[#334EAC] mb-3">COMMUNITY</div>
+              <h2 class="font-display font-extrabold text-3xl md:text-4xl text-[#081F5C] leading-tight">Join the Anilyfe community</h2>
+              <p class="mt-4 text-[#4a5a8c] leading-relaxed">Connect with collectors, creators and anime sellers across Nigeria. Discover deals, updates, and fresh drops before anyone else.</p>
+            </div>
+            <button class="btn btn-primary !px-7 !py-3.5 !text-sm" data-action="toast" data-msg="Community space opens soon — stay tuned!">Join Community <i data-lucide="arrow-right" style="width:16px;height:16px"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- become a seller -->
     <section id="sell" class="relative z-10 py-20">
       <div class="max-w-7xl mx-auto px-5">
