@@ -1,0 +1,34 @@
+/* ANILyfe — Ambient backgrounds, particles, reveal/float/pulse animations */
+
+/* ---------- Ambient ---------- */
+  .hero-ambient{background:
+    radial-gradient(1100px 520px at 82% -10%,rgba(112,139,209,.55),transparent 60%),
+    radial-gradient(900px 500px at 8% 110%,rgba(51,78,172,.5),transparent 60%),
+    linear-gradient(160deg,#081F5C 0%,#0B2A7A 45%,#334EAC 100%)}
+  .auth-ambient{background:
+    radial-gradient(900px 600px at 85% 20%,rgba(208,227,255,.9),transparent 55%),
+    radial-gradient(700px 500px at 10% 90%,rgba(112,139,209,.35),transparent 60%),
+    linear-gradient(180deg,#F6FCFF 0%,#D0E3FF 55%,#708BD1 130%)}
+  .grid-lines{background-image:linear-gradient(rgba(208,227,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(208,227,255,.08) 1px,transparent 1px);background-size:44px 44px}
+
+  .spark{position:absolute;border-radius:50%;background:#fff;pointer-events:none;animation:twinkle var(--d,4s) ease-in-out infinite;box-shadow:0 0 10px 2px rgba(255,255,255,.55)}
+  @keyframes twinkle{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:.95;transform:scale(1.25)}}
+  .shoot{position:absolute;width:150px;height:2px;background:linear-gradient(90deg,transparent,#fff);border-radius:2px;filter:drop-shadow(0 0 6px #fff);animation:shoot 5.5s ease-in infinite;opacity:0}
+  @keyframes shoot{0%{transform:translate(0,0) rotate(-24deg);opacity:0}6%{opacity:1}16%{transform:translate(-420px,190px) rotate(-24deg);opacity:0}100%{opacity:0}}
+
+  .marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .marquee-track{display:flex;gap:1.25rem;width:max-content;animation:marquee 32s linear infinite}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  @keyframes marquee{to{transform:translateX(-50%)}}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  .float-slow{animation:floaty 7s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+  .pulse-dot{position:relative}
+  .pulse-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid currentColor;animation:pulse 1.8s ease-out infinite;opacity:.7}
+  @keyframes pulse{to{transform:scale(1.9);opacity:0}}
+
+  
