@@ -1,0 +1,180 @@
+/* ANILyfe — extracted from the original single-file prototype (index.html) */
+
+/* Marketing landing page / logged-out home feed. */
+
+function viewLanding(){
+  const niches = [
+    {n:'Figures',   i:'bot',       d:'Collectible figures, statues and character displays'},
+    {n:'Manga',     i:'book-open', d:'Manga volumes, box sets and light novels'},
+    {n:'Apparel',   i:'shirt',     d:'Anime-inspired shirts, hoodies and streetwear'},
+    {n:'Wall Art',  i:'image',     d:'Posters, prints, frames and wall scrolls'},
+    {n:'Collectibles',i:'sparkles', d:'Limited pieces, display items and fan collectibles'},
+    {n:'Accessories',i:'key-round',d:'Keychains, pins, charms and everyday anime gear'}
+  ];
+  const loop = niches.map(x=>`
+    <div class="glass-dark rounded-2xl p-5 w-60 shrink-0 group cursor-default">
+      <img src="assets/images/category-${x.n.toLowerCase().replace(/ /g,'-')}.png" width="240" height="112" alt="${x.n}" class="mb-4 h-28 w-full rounded-xl object-cover transition duration-300 group-hover:scale-[1.03]" loading="lazy" onerror="this.remove()">
+      <div class="w-12 h-12 rounded-xl bg-[rgba(208,227,255,.12)] border border-[rgba(208,227,255,.2)] flex items-center justify-center mb-4 transition group-hover:bg-[#334EAC] group-hover:scale-110" style="transition:.3s">
+        <i data-lucide="${x.i}" style="width:22px;height:22px;color:#D0E3FF"></i>
+      </div>
+      <div class="font-display font-bold text-white text-lg">${x.n}</div>
+      <div class="text-xs text-[#9FB6E8] mt-1 leading-relaxed">${x.d}</div>
+    </div>`).join('');
+
+  return `
+  <div class="min-h-screen hero-ambient relative overflow-hidden">
+    <div class="absolute inset-0 grid-lines"></div>
+
+    ${(()=>{const a=(window.ANILyfeAPI?.getAnnouncements?.()||[]).find(x=>x.active!==false);return a?`<div class="relative z-20 bg-white/10 border-b border-white/10"><div class="max-w-7xl mx-auto px-5 py-2.5 flex items-center gap-3 text-white text-xs"><i data-lucide="megaphone" style="width:14px;height:14px;color:#E9B949"></i><span class="flex-1 font-bold">${esc(a.text)}</span>${a.link?`<a href="${esc(a.link)}" target="_blank" rel="noopener" class="text-[#E9B949] font-extrabold">Open</a>`:''}<button data-action="dismiss-announcement" data-id="${a.id}" class="text-white/70">✕</button></div></div>`:''})()}
+    <!-- nav -->
+    <header class="relative z-10 max-w-7xl mx-auto px-5 py-5 flex items-center justify-between">
+      ${LOGO_D('text-2xl')}
+      <nav class="hidden md:flex items-center gap-7 text-[#C9D9F5] text-sm font-semibold">
+        <a href="#niches" class="hover:text-white transition">Niches</a>
+        <a href="#sell" class="hover:text-white transition">Sell</a>
+        <a href="#/marketplace" class="hover:text-white transition">Marketplace</a>
+        <a href="https://linktr.ee/Anilyfe" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">Join Community</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        ${regionSelect('hidden sm:block !w-44 [&_select]:!bg-[rgba(8,31,92,.5)] [&_select]:!text-[#D0E3FF] [&_select]:!border-[rgba(208,227,255,.25)]')}
+        <a href="#/auth" class="btn btn-ghost !py-2 !text-xs">Sign in</a>
+      </div>
+    </header>
+
+    <!-- hero -->
+    <section class="relative z-10 max-w-7xl mx-auto px-5 pt-14 pb-24 md:pt-24 md:pb-32">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 glass-dark rounded-full px-4 py-2 text-xs font-bold text-[#D0E3FF] mb-7 reveal">
+          <span class="w-2 h-2 rounded-full bg-[#7FB0FF]"></span> THE ANIME MARKETPLACE · MADE PERSONAL
+        </div>
+        <h1 class="font-display font-extrabold text-white leading-[1.02] text-5xl md:text-7xl reveal">
+          Welcome to<br/><span class="text-[#D0E3FF]">Anilyfe</span><span class="text-[#E9B949]">.</span>
+        </h1>
+        <p class="mt-6 text-[#AFC4EC] text-base md:text-lg leading-relaxed max-w-xl reveal">
+          Figures, fits, manga and collectibles bought and sold by fans across Africa and beyond.
+          Discover approved sellers, track authentic stock, and support anime culture.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-4 reveal">
+          <a href="#/marketplace" class="btn btn-primary !px-7 !py-3.5 !text-sm">Explore Marketplace <i data-lucide="arrow-right" style="width:17px;height:17px"></i></a>
+          <button data-action="become-seller" class="btn !px-7 !py-3.5 !text-sm !bg-white/10 !text-white !border !border-[rgba(208,227,255,.3)] hover:!bg-white/20">Become a Seller</button>
+        </div>
+        <div class="mt-12 flex flex-wrap gap-8 reveal">
+          ${[['6','Core categories'],['Backend','Verified records'],['Nationwide','Shipping ready']].map(s=>`
+            <div><div class="font-display font-extrabold text-2xl text-white">${s[0]}</div><div class="text-[11px] uppercase tracking-widest text-[#708BD1] font-bold mt-1">${s[1]}</div></div>`).join('')}
+        </div>
+      </div>
+      <div class="absolute right-8 top-1/2 hidden w-[430px] -translate-y-1/2 lg:block xl:w-[520px]">
+        <div class="relative">
+          <img src="assets/images/homepage.png" width="640" height="360" alt="ANILyfe anime marketplace" class="anilyfe-art aspect-[16/10] w-full" loading="eager" onerror="this.parentNode.style.display='none'">
+          <div class="absolute inset-x-0 bottom-0 rounded-b-3xl bg-gradient-to-t from-[#071B52]/90 to-transparent p-4 text-center font-tech text-xs font-bold italic tracking-widest text-[#E9B949]">EST. FOR THE CULTURE</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="relative z-10 max-w-7xl mx-auto px-5 pb-12">
+      <div class="grid md:grid-cols-[1.15fr_.85fr] gap-5">
+        <div class="card overflow-hidden bg-white/10 border-white/15 backdrop-blur-xl">
+          <div class="relative h-72 overflow-hidden">
+            <img src="assets/images/marketplace.png" width="640" height="288" alt="ANILyfe anime marketplace shelves" class="w-full h-full object-cover" loading="eager" onerror="this.remove()">
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#071B52]/95 to-transparent p-4"><div class="font-tech text-[9px] uppercase tracking-[.2em] text-white/80">ANILyfe marketplace preview</div></div>
+          </div>
+          <div class="grid grid-cols-2 gap-px bg-white/10">
+            <img src="assets/images/category-figures.png" width="300" height="112" alt="Anime figures collection" class="w-full h-28 object-cover object-top bg-[#F6FCFF]" loading="lazy" onerror="this.remove()">
+            <img src="assets/images/category-manga.png" width="300" height="112" alt="Anime manga collection" class="w-full h-28 object-cover object-top bg-[#F6FCFF]" loading="lazy" onerror="this.remove()">
+          </div>
+          <div class="p-5"><div class="font-tech text-[10px] uppercase tracking-[.25em] text-[#9BC7FF]">ANIME VIBE / MARKETPLACE FIRST</div><p class="mt-2 text-sm text-white/75 leading-relaxed">Original ANILyfe anime-style artwork provides a cohesive visual system. Standard image slots can be customized anytime.</p></div>
+        </div>
+        <div class="glass-dark rounded-3xl p-7 flex flex-col justify-center">
+          <div class="font-tech text-[10px] uppercase tracking-[.25em] text-[#9BC7FF]">REAL DATA ONLY</div>
+          <h2 class="mt-2 font-display text-2xl font-extrabold text-white">The marketplace starts empty by design.</h2>
+          <p class="mt-3 text-sm text-[#C9D9F5] leading-relaxed">Products, sellers, stock, orders, reviews and payments come from the backend. When real sellers publish products, they appear here through the API.</p>
+          <a href="#/marketplace" class="btn btn-primary mt-5 w-fit">Explore marketplace <i data-lucide="arrow-right" style="width:15px;height:15px"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- niches marquee -->
+    <section id="niches" class="relative z-10 py-16 border-t border-[rgba(208,227,255,.12)]">
+      <div class="max-w-7xl mx-auto px-5 flex items-end justify-between mb-8">
+        <div>
+          <div class="font-tech text-xs font-bold tracking-[.25em] text-[#708BD1] mb-2">BROWSE THE SHELVES</div>
+          <h2 class="font-display font-bold text-3xl text-white">Every niche an otaku could want</h2>
+        </div>
+        <a href="#/marketplace" class="hidden sm:flex items-center gap-2 text-sm font-bold text-[#D0E3FF] hover:text-white transition">View all <i data-lucide="chevron-right" style="width:16px;height:16px"></i></a>
+      </div>
+      <div class="marquee"><div class="marquee-track pr-5">${loop}${loop}</div></div>
+    </section>
+
+    <!-- community -->
+    <section id="community" class="relative z-10 py-8 md:py-12">
+      <div class="max-w-7xl mx-auto px-5">
+        <div class="glass rounded-3xl p-8 md:p-12">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div class="max-w-2xl">
+              <div class="font-tech text-xs font-bold tracking-[.25em] text-[#334EAC] mb-3">COMMUNITY</div>
+              <h2 class="font-display font-extrabold text-3xl md:text-4xl text-[#081F5C] leading-tight">Join the Anilyfe community</h2>
+              <p class="mt-4 text-[#4a5a8c] leading-relaxed">Connect with collectors, creators and anime sellers across Nigeria. Discover releases, store updates, and catalog drops.</p>
+            </div>
+            <a class="btn btn-primary !px-7 !py-3.5 !text-sm" href="https://linktr.ee/Anilyfe" target="_blank" rel="noopener noreferrer">Join Community <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="relative z-10 py-16">
+      <div class="max-w-7xl mx-auto px-5">
+        <div class="grid md:grid-cols-3 gap-5">
+          ${[
+            ['How it works','Discover approved products → add to cart → confirm delivery → pay securely → track your order.','arrow-right'],
+            ['Buyer protection','Seller approval, server-side totals, payment verification and support stay inside the marketplace flow.','shield-check'],
+            ['Sell on ANILyfe','Create your seller identity → complete KYC → await approval → publish approved products → fulfil paid orders.','store']
+          ].map(x=>`<div class="glass rounded-3xl p-7"><span class="w-11 h-11 rounded-xl bg-[#E7F1FF] flex items-center justify-center"><i data-lucide="${x[2]}" style="width:20px;height:20px;color:#334EAC"></i></span><h3 class="font-display font-extrabold text-xl text-[#081F5C] mt-5">${x[0]}</h3><p class="text-sm text-[#4a5a8c] mt-2 leading-relaxed">${x[1]}</p></div>`).join('')}
+        </div>
+        <div class="mt-6 flex flex-wrap gap-2">
+          ${[['Buyer Protection','#/buyer-protection'],['Payment & Security','#/payment-security'],['Shipping','#/shipping'],['Returns & Refunds','#/returns'],['Seller Policy','#/seller-policy'],['Marketplace Rules','#/marketplace-rules'],['KYC','#/kyc'],['Cancellation','#/cancellation'],['Contact Support','#/contact']].map(x=>`<a href="${x[1]}" class="chip">${x[0]}</a>`).join('')}
+        </div>
+      </div>
+    </section>
+
+    <section class="relative z-10 py-12">
+      <div class="max-w-7xl mx-auto px-5">
+        <div class="glass-dark rounded-3xl p-8 md:p-10">
+          <div class="font-tech text-[10px] uppercase tracking-[.25em] text-[#9BC7FF]">COMMUNITY → DISTRIBUTION</div>
+          <div class="mt-6 grid sm:grid-cols-5 gap-3">
+            ${['Community','Awareness','Marketplace','Sellers','Buyers'].map((x,i)=>`<div class="rounded-2xl border border-white/10 bg-white/5 p-4 text-center"><div class="text-[10px] font-bold text-[#708BD1]">0${i+1}</div><div class="mt-2 font-display font-bold text-white">${x}</div></div>`).join('')}
+          </div>
+          <p class="mt-5 text-xs text-[#C9D9F5]">Distribution channels: WhatsApp, Telegram, Discord, campus ambassadors, creators and seller referrals. These are awareness channels, not social features inside ANILyfe.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- become a seller -->
+    <section id="sell" class="relative z-10 py-20">
+      <div class="max-w-7xl mx-auto px-5">
+        <div class="glass rounded-3xl p-8 md:p-14 grid md:grid-cols-2 gap-10 items-center reveal">
+          <div>
+            <div class="font-tech text-xs font-bold tracking-[.25em] text-[#334EAC] mb-3">SELLER PROGRAM</div>
+            <h2 class="font-display font-extrabold text-3xl md:text-4xl text-[#081F5C] leading-tight">Turn your collection into a storefront.</h2>
+            <p class="mt-4 text-[#4a5a8c] leading-relaxed">Apply in under a minute — business name, what you sell, starting price. Once the primary administrator approves your identity, your products go live to every buyer on Anilyfe.</p>
+            <ul class="mt-6 space-y-3">
+              ${[['store','Your own seller ID & dashboard'],['badge-check','Admin approval keeps buyers safe'],['banknote','Sell in Naira, Cedis, Dollars & more']].map(f=>`
+              <li class="flex items-center gap-3 text-sm font-semibold text-[#081F5C]"><span class="w-9 h-9 rounded-xl bg-[#E7F1FF] flex items-center justify-center shrink-0"><i data-lucide="${f[0]}" style="width:17px;height:17px;color:#334EAC"></i></span>${f[1]}</li>`).join('')}
+            </ul>
+            <a href="#/auth" class="btn btn-primary mt-8 !px-7 !py-3">Become a Seller <i data-lucide="arrow-right" style="width:16px;height:16px"></i></a>
+          </div>
+          <div class="relative">
+            <div class="rounded-2xl overflow-hidden border-4 border-white shadow-2xl">
+              <img src="assets/images/category-collectibles.png" width="400" height="288" alt="Anime collectibles" class="w-full h-72 object-cover" loading="lazy" onerror="this.remove()"/>
+            </div>
+            <div class="absolute -bottom-5 -left-5 glass rounded-2xl px-5 py-4">
+              <div class="font-display font-extrabold text-2xl text-[#081F5C]">Real</div>
+              <div class="text-[11px] font-bold uppercase tracking-widest text-[#708BD1]">seller activity only</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    ${siteFooter('relative z-10 border-t border-[rgba(208,227,255,.12)] bg-[rgba(8,31,92,.8)] text-white')}
+  </div>`;
+}
